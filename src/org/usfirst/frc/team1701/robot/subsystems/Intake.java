@@ -48,13 +48,13 @@ public class Intake extends Subsystem {
 	
 	
 	public void forwards() {
-		bottomMotor.set(-1);
+		bottomMotor.set(1);
 
 	}
 
 	public void reverse() {
 		if (!Robot.shooterSystem.isShooterActive()){
-			bottomMotor.set(1);
+			bottomMotor.set(-1);
 		}
 
 	}

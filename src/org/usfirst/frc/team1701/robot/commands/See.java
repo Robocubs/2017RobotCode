@@ -46,10 +46,7 @@ public class See extends Command {
 	public void setupNetworktable() {
 		try {
 			NetworkTable.setTeam(1701);
-			// NetworkTable.setClientMode();
-			// NetworkTable.setIPAddress("roboRIO-1701-FRC.local");
 			vision = NetworkTable.getTable("vision");
-			// vision.initialize();
 		} catch (Exception e) {
 			System.out.println("Exception caught while setting up NetworkTable in See.");
 			System.out.println(e.getMessage());

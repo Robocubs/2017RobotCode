@@ -69,17 +69,31 @@ public class AutonomousCommand extends Command {
 	protected void execute() {
 		// SmartDashboard.putNumber("Actual Autonomous Mode: ", autonomousMode);
 		Robot.lights.getTargetingLED().set(Relay.Value.kOn);
+
 		int size;
+		boolean gearTargetFound = false;
+
 		try {
 			size = (int) visionTable.getNumber("possibleGoalSize", -1);
+			gearTargetFound = visionTable.getBoolean("gearTargetFound", false);
 		} catch (Exception e) {
 			size = -1;
 		}
 
+		if (gearTargetFound) {//check to see if the below code is true
+			if (Robot.lights.getLED2().get() == Relay.Value.kReverse //find out if light B is on or not
+					|| Robot.lights.getLED2().get() == Relay.Value.kOn) {//find out if both light A and B are on
+				Robot.lights.getLED2().set(Relay.Value.kOn); //if either of the above statements are true, turn on both light A and B
+			} else
+				Robot.lights.getLED2().set(Relay.Value.kForward);
+		}
+
+		// asdlfkjhasdlkfjhasd
+
 		SmartDashboard.putNumber("Current State", currentState);
 		SmartDashboard.putNumber("Left Encoder Reading: ", Robot.driveTrain.getLeftDistance());
 		SmartDashboard.putNumber("Right Encoder Reading: ", Robot.driveTrain.getRightDistance());
-		//SmartDashboard.putNumber("Navx Reading: ", RobotMap.navx.getYaw());
+		// SmartDashboard.putNumber("Navx Reading: ", RobotMap.navx.getYaw());
 		SmartDashboard.putNumber("Number of Possible Goal Targets (should be 2): ", size);
 
 		switch (autonomousMode) {

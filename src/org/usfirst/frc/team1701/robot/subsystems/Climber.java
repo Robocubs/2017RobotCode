@@ -58,8 +58,8 @@ public class Climber extends Subsystem {
 			RobotMap.lightsLED2.set(Relay.Value.kReverse);
 		}
 
-		climberMotor1.set(.75);
-		climberMotor2.set(.75);
+		climberMotor1.set(-1);
+		climberMotor2.set(-1);
 	}
 
 	public void turnOff() {
