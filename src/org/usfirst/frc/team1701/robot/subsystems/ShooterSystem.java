@@ -39,8 +39,9 @@ public class ShooterSystem extends Subsystem {
 	private final SpeedController mainShoot = RobotMap.shoot1;
 	private final SpeedController hopperMotor = RobotMap.hopperMotor;
 	private final double PULSES = 360.0;
-	private final int TARGET_SPEED = 4900;
+	private final int TARGET_SPEED = 4200;
 	private boolean shooterActive;
+	private boolean hopperReverse = true;
 
 	public boolean isShooterActive() {
 		return shooterActive;
@@ -59,13 +60,16 @@ public class ShooterSystem extends Subsystem {
 
 	public void fire() {
 		shooterActive = true;
-		mainShoot.set(1);
+		mainShoot.set(.80);
 		double speed = shootingEncoder.getRate();
 		speed = (int) (speed * 400 + .05) / 100;
-		// SmartDashboard.putNumber("Encoder Speed: ", speed);
-		if (speed < TARGET_SPEED) {
+		SmartDashboard.putNumber("Encoder Speed: ", speed);
+		if(speed >= TARGET_SPEED)
+			hopperReverse = false;
+		
+		if (hopperReverse) {
 			// will not load balls until shooter is at speed
-			// hopperMotor.set(1); // run in reverse until up to speed
+			hopperMotor.set(1); // run in reverse until up to speed
 		} else {
 			hopperMotor.set(-1); // once its reached the right speed, run the
 									// hopper forwards to feed the shooter
@@ -92,6 +96,12 @@ public class ShooterSystem extends Subsystem {
 		mainShoot.set(0);
 		hopperMotor.set(0);
 		shooterActive = false;
+		hopperReverse = true;
+		if (RobotMap.lightsLED3.get() == Relay.Value.kForward || RobotMap.lightsLED3.get() == Relay.Value.kOn) {
+			RobotMap.lightsLED3.set(Relay.Value.kForward);
+		} else {
+			RobotMap.lightsLED3.set(Relay.Value.kOff);
+		}
 	}
 
 	public void initDefaultCommand() {

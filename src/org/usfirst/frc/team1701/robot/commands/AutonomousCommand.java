@@ -31,6 +31,7 @@ public class AutonomousCommand extends Command {
 	// reversed 3/4 at Southfield after round 63
 	// I don't know why we need to
 	private final double AUTO_DRIVE_SPEED = -.6;
+	private double actualDriveSpeed = 0;
 	private final double AUTO_TURN_SPEED = .3;
 	private boolean isFinished = false;
 	private int currentState;
@@ -62,7 +63,8 @@ public class AutonomousCommand extends Command {
 		NetworkTable.setTeam(1701);
 		visionTable = NetworkTable.getTable("vision");
 		RobotMap.navx.reset();
-		autonomousMode = (int) SmartDashboard.getNumber("Autonomous Mode: ", 0);
+		autonomousMode = (int) SmartDashboard.getNumber("Autonomous Mode: ", -1);
+		actualDriveSpeed = 0;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -80,10 +82,29 @@ public class AutonomousCommand extends Command {
 			size = -1;
 		}
 
-		if (gearTargetFound) {//check to see if the below code is true
-			if (Robot.lights.getLED2().get() == Relay.Value.kReverse //find out if light B is on or not
-					|| Robot.lights.getLED2().get() == Relay.Value.kOn) {//find out if both light A and B are on
-				Robot.lights.getLED2().set(Relay.Value.kOn); //if either of the above statements are true, turn on both light A and B
+		if (gearTargetFound) {// check to see if the below code is true
+			if (Robot.lights.getLED2().get() == Relay.Value.kReverse // find out
+																		// if
+																		// light
+																		// B is
+																		// on or
+																		// not
+					|| Robot.lights.getLED2().get() == Relay.Value.kOn) {// find
+																			// out
+																			// if
+																			// both
+																			// light
+																			// A
+																			// and
+																			// B
+																			// are
+																			// on
+				Robot.lights.getLED2().set(Relay.Value.kOn); // if either of the
+																// above
+																// statements
+																// are true,
+																// turn on both
+																// light A and B
 			} else
 				Robot.lights.getLED2().set(Relay.Value.kForward);
 		}
@@ -103,19 +124,25 @@ public class AutonomousCommand extends Command {
 		// case 2:
 		// autoHighShot();
 		// break;
-		default:
+		case 1:
 			forwardsAndStop();
+			break;
+		default:
+			backwardsAndStop();
 			break;
 		}
 	}
 
 	private void driveForward() {
-		RobotMap.driveTrainRM.arcadeDrive(AUTO_DRIVE_SPEED, 0);
+		if (Math.abs(actualDriveSpeed) < Math.abs(AUTO_DRIVE_SPEED))
+			actualDriveSpeed -= .03;
+		RobotMap.driveTrainRM.arcadeDrive(actualDriveSpeed, 0);
 	}
 
 	private void driveBackwards() {
-		Robot.driveTrain.leftDriveControl(AUTO_DRIVE_SPEED);
-		Robot.driveTrain.rightDriveControl(AUTO_DRIVE_SPEED);
+		if (Math.abs(actualDriveSpeed) < Math.abs(AUTO_DRIVE_SPEED))
+			actualDriveSpeed += .03;
+		RobotMap.driveTrainRM.arcadeDrive(actualDriveSpeed, 0);
 	}
 
 	private void forwardsAndStop() {
@@ -127,6 +154,23 @@ public class AutonomousCommand extends Command {
 			if (Robot.driveTrain.getLeftDistance() < DRIVE_FORWARD_DISTANCE
 					&& Robot.driveTrain.getRightDistance() < DRIVE_FORWARD_DISTANCE) {
 				driveForward();
+			} else {
+				RobotMap.navx.reset();
+				// currentState++;
+			}
+			break;
+		}
+	}
+
+	private void backwardsAndStop() {
+		switch (currentState) {
+		case 0: // DONE
+			isFinished = true;
+			break;
+		case 1: // DRIVING_FORWARD
+			if (Robot.driveTrain.getLeftDistance() > -1.4 * DRIVE_FORWARD_DISTANCE
+					&& Robot.driveTrain.getRightDistance() > -1.4 * DRIVE_FORWARD_DISTANCE) {
+				driveBackwards();
 			} else {
 				RobotMap.navx.reset();
 				// currentState++;

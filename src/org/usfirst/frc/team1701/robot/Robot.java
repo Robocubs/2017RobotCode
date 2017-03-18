@@ -100,10 +100,7 @@ public class Robot extends IterativeRobot {
     	   SmartDashboard.putBoolean("NavX Detected", false);
     	}
     	
-    	SmartDashboard.putNumber("Autonomous Mode: ", 0);
-    	SmartDashboard.putString("0 = drive forward and stop", "");
-    	SmartDashboard.putString("1 = place gear (incomplete)", "");
-    	SmartDashboard.putString("2 = shoot high goals (incomplete)", "");
+    	SmartDashboard.putNumber("Autonomous Mode: ", -1);
 	}
 	
 	public void setupNetworktable() {
