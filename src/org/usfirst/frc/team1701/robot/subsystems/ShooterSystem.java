@@ -39,7 +39,7 @@ public class ShooterSystem extends Subsystem {
 	private final SpeedController mainShoot = RobotMap.shoot1;
 	private final SpeedController hopperMotor = RobotMap.hopperMotor;
 	private final double PULSES = 360.0;
-	private final int TARGET_SPEED = 4200;
+	private final int TARGET_SPEED = 5500;
 	private boolean shooterActive;
 	private boolean hopperReverse = true;
 
@@ -60,10 +60,10 @@ public class ShooterSystem extends Subsystem {
 
 	public void fire() {
 		shooterActive = true;
-		mainShoot.set(.80);
+		mainShoot.set(1.0);
 		double speed = shootingEncoder.getRate();
 		speed = (int) (speed * 400 + .05) / 100;
-		SmartDashboard.putNumber("Encoder Speed: ", speed);
+		SmartDashboard.putNumber("Shooter Speed: ", speed);
 		if(speed >= TARGET_SPEED)
 			hopperReverse = false;
 		
@@ -74,10 +74,10 @@ public class ShooterSystem extends Subsystem {
 			hopperMotor.set(-1); // once its reached the right speed, run the
 									// hopper forwards to feed the shooter
 
-			if (RobotMap.lightsLED3.get() == Relay.Value.kForward) {
-				RobotMap.lightsLED3.set(Relay.Value.kOn);
+			if (RobotMap.lightsLED2.get() == Relay.Value.kForward) {
+				RobotMap.lightsLED2.set(Relay.Value.kOn);
 			} else {
-				RobotMap.lightsLED3.set(Relay.Value.kReverse);
+				RobotMap.lightsLED2.set(Relay.Value.kReverse);
 			}
 		}
 	}
@@ -97,10 +97,10 @@ public class ShooterSystem extends Subsystem {
 		hopperMotor.set(0);
 		shooterActive = false;
 		hopperReverse = true;
-		if (RobotMap.lightsLED3.get() == Relay.Value.kForward || RobotMap.lightsLED3.get() == Relay.Value.kOn) {
-			RobotMap.lightsLED3.set(Relay.Value.kForward);
+		if (RobotMap.lightsLED2.get() == Relay.Value.kForward || RobotMap.lightsLED2.get() == Relay.Value.kOn) {
+			RobotMap.lightsLED2.set(Relay.Value.kForward);
 		} else {
-			RobotMap.lightsLED3.set(Relay.Value.kOff);
+			RobotMap.lightsLED2.set(Relay.Value.kOff);
 		}
 	}
 

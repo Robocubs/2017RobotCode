@@ -44,6 +44,7 @@ public class TeleopDrive extends Command {
 		Robot.driveTrain.resetLeftEncoder();
 		Robot.driveTrain.resetRightEncoder();
 		// System.out.println("Teleop Drive Initialized.");
+		Robot.driveTrain.preparePIDForTeleop();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
