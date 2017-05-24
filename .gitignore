@@ -16,3 +16,4 @@
  # Eclipse Core
  .project
 /bin/
+*~
