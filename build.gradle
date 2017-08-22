@@ -14,7 +14,7 @@ dependencies {
 	compile navx()
 }
 def robotManifest = {
-	attributes "Main-Class": "edu.wpi.first.wpilibj.RobotBase"
+	attributes "Main-Class": "edu.wpi.first.wpilibj.IterativeRobot"
 	attributes "Robot-Class": frc.robotClass
 }
 jar {
