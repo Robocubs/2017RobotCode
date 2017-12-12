@@ -36,12 +36,16 @@
 package org.usfirst.frc.team1701.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1701.robot.Robot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class Preciseify extends Command {
+	private static final Logger logger = LogManager.getLogger();
 	public Preciseify() {
 		requires(Robot.driveTrain);
 	}
 	protected void initialize() {}
 	protected void execute() {
+		logger.info("Precise mode enabled.");
 		Robot.driveTrain.setPrecise(true);
 	}
 	protected boolean isFinished() {

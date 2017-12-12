@@ -36,17 +36,25 @@
 package org.usfirst.frc.team1701.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1701.robot.Robot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class HopperForward extends Command {
+	private static final Logger logger = LogManager.getLogger();
 	public HopperForward() {
 		requires(Robot.shooterSystem);
 	}
 	protected void initialize() {}
 	protected void execute() {
+		logger.info("Hopper running.");
 		Robot.shooterSystem.hopperRun(1.0);
 	}
 	protected boolean isFinished() {
 		return false;
 	}
-	protected void end() {}
-	protected void interrupted() {}
+	protected void end() {
+		logger.info("Hopper stopped manually.");
+	}
+	protected void interrupted() {
+		logger.info("Hopper stopped due to interruption.");
+	}
 }

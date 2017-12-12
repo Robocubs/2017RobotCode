@@ -36,17 +36,27 @@
 package org.usfirst.frc.team1701.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1701.robot.Robot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class HopperIdle extends Command {
+	private static final Logger logger = LogManager.getLogger();
 	public HopperIdle() {
 		requires(Robot.shooterSystem);
 	}
-	protected void initialize() {}
+	protected void initialize() {
+		logger.info("Shooter system initialized.");
+	}
 	protected void execute() {
+		logger.info("Shooter running.");
 		Robot.shooterSystem.hopperRun(-.55);
 	}
 	protected boolean isFinished() {
 		return false;
 	}
-	protected void end() {}
-	protected void interrupted() {}
+	protected void end() {
+		logger.info("Shooter stopped.");
+	}
+	protected void interrupted() {
+		logger.info("Shooter stopped because of logging.");
+	}
 }

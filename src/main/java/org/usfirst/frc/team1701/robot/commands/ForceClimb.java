@@ -36,12 +36,16 @@
 package org.usfirst.frc.team1701.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1701.robot.Robot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class ForceClimb extends Command {
+	private static final Logger logger = LogManager.getLogger();
 	public ForceClimb() {
 		requires(Robot.climber);
 	}
 	protected void initialize() {}
 	protected void execute() {
+		logger.warn("Starting climber!");
 		Robot.climber.turnOn();
 	}
 	protected boolean isFinished() {

@@ -36,13 +36,18 @@
 package org.usfirst.frc.team1701.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1701.robot.Robot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class HopperStop extends Command {
+	private static final Logger logger = LogManager.getLogger();
 	public HopperStop() {
 		requires(Robot.shooterSystem);
 	}
 	protected void initialize() {}
 	protected void execute() {
+		logger.info("Hopper stopping...");
 		Robot.shooterSystem.hopperStop();
+		logger.info("Hopper stopped.");
 	}
 	protected boolean isFinished() {
 		return false;

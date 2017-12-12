@@ -36,14 +36,20 @@
 package org.usfirst.frc.team1701.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1701.robot.Robot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class OverrideHighShot extends Command {
+	private static final Logger logger = LogManager.getLogger();
 	public OverrideHighShot() {
 		requires(Robot.shooterSystem);
 	}
 	protected void initialize() {
+		logger.info("Initializing shooter system...");
 		Robot.shooterSystem.setup();
+		logger.info("Shooter system initializing!");
 	}
 	protected void execute() {
+		logger.warn("Shooter system firing!");
 		Robot.shooterSystem.fire();
 	}
 	protected boolean isFinished() {

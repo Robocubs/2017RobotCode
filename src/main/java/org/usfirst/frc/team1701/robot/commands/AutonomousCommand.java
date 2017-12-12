@@ -40,6 +40,8 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable; // Eventually replaceable by ZeroMQ.
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  * Autonomous driving command.
  */
@@ -55,15 +57,20 @@ public class AutonomousCommand extends Command {
     private NetworkTable visionTable;
     private boolean turnLeft = false;
     private int autonomousMode;
+    private static final Logger logger = LogManager.getLogger();
     public AutonomousCommand() {
         requires(Robot.driveTrain); // Using requires, we depend on subsystem `driveTrain`.
     }
     protected void initialize() {
+        logger.info("Resetting left encoder...");
         Robot.driveTrain.resetLeftEncoder();
+        logger.info("Resetting right encoder...");
         Robot.driveTrain.resetRightEncoder();
+        logger.info("Setting drive speed to 0.0...");
         Robot.driveTrain.setActualDriveSpeed(0.0);
     }
     protected void execute() {
+        logger.warn("Autonomous started!");
         Robot.lights.getTargetingLED().set(Relay.Value.kOn);
         SmartDashboard.putNumber("Left Encoder Reading: ", Robot.driveTrain.getLeftDistance());
         if (Robot.driveTrain.getLeftDistance() > -1 * DRIVE_CORRECTION * DRIVE_FORWARD_DISTANCE || Robot.driveTrain.getRightDistance() > -1 * DRIVE_CORRECTION * DRIVE_FORWARD_DISTANCE) {
@@ -77,9 +84,11 @@ public class AutonomousCommand extends Command {
         return false;
     }
     protected void end() {
+        logger.warn("Returning control to user.");
         RobotMap.driveTrainRM.arcadeDrive(0, 0);
     }
     protected void interrupted() {
+        logger.warn("Returning control to user.");
         RobotMap.driveTrainRM.arcadeDrive(0, 0);
     }
 }
